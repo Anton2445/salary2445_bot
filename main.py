@@ -1,4 +1,9 @@
 import os
+print("Переменные окружения:", os.environ)
+print("TOKEN есть?", "TOKEN" in os.environ)
+print("TOKEN =", os.environ.get("TOKEN"))
+
+import os
 import json
 import re
 from pathlib import Path
@@ -11,7 +16,9 @@ from telegram.ext import (
 )
 
 # ─── CONFIG ───
-TOKEN = os.environ["TOKEN"]
+import os
+print("TOKEN" in os.environ)
+print(os.environ.get("TOKEN"))
 SAVE_FILE = Path("deals.json")
 DATE, NAME, AMOUNT, FEE, RATE, MEMBERS = range(6)
 
@@ -268,6 +275,11 @@ async def show_month(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ─── MAIN ───
 def main():
+    TOKEN = os.environ.get("TOKEN")
+    if not TOKEN:
+        print("❌ Переменная окружения 'TOKEN' не найдена!")
+        return
+
     app = ApplicationBuilder().token(TOKEN).build()
 
     conv = ConversationHandler(
@@ -294,7 +306,3 @@ def main():
 
     print("✅ Бот запущен")
     app.run_polling()
-
-if __name__ == "__main__":
-    main()
-
